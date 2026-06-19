@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="robots" content="noindex, nofollow" />
+<title>Edigcsms — Dokumentasi Ekosistem &amp; Alur CSMS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --ground:#E4E7E2; --panel:#F3F5F1; --panel-hi:#FBFCFA; --ink:#16201D; --ink-soft:#4A554F;
+    --line:#C5CCC4; --teal:#0E6E66; --teal-dk:#0A4F49; --amber:#C2630B; --go:#2E7D52; --gov:#2B5F8A;
+    --shadow:0 1px 0 rgba(22,32,29,.04),0 8px 30px -16px rgba(22,32,29,.28); --maxw:1080px;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:radial-gradient(1100px 560px at 82% -8%,rgba(14,110,102,.07),transparent 60%),var(--ground);
+    color:var(--ink);font-family:"IBM Plex Sans",system-ui,sans-serif;line-height:1.6;-webkit-font-smoothing:antialiased;}
+  h1,h2,h3{font-family:"Space Grotesk",sans-serif;font-weight:600;line-height:1.1;margin:0;letter-spacing:-.01em;}
+  .mono{font-family:"IBM Plex Mono",monospace;}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 28px;}
+  a{color:var(--teal-dk);}
+
+  header.top{position:sticky;top:0;z-index:20;background:rgba(228,231,226,.85);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);}
+  header.top .row{display:flex;align-items:center;gap:14px;height:58px;}
+  .brand{display:flex;align-items:center;gap:10px;font-family:"Space Grotesk";font-weight:700;letter-spacing:-.02em;}
+  .brand .dot{width:11px;height:11px;border-radius:2px;background:var(--amber);box-shadow:0 0 0 3px rgba(194,99,11,.18);}
+  .brand b{color:var(--amber);}
+  header.top .cta{margin-left:auto;}
+  .btn{display:inline-flex;align-items:center;gap:8px;font-family:"IBM Plex Mono";font-size:13px;text-decoration:none;
+    background:var(--amber);color:#fff;padding:9px 15px;border-radius:8px;box-shadow:0 6px 16px -8px rgba(194,99,11,.7);}
+  .btn.ghost{background:var(--panel-hi);color:var(--ink);border:1px solid var(--line);box-shadow:none;}
+
+  .hero{padding:56px 0 24px;}
+  .kick{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:20px;}
+  .chip{font-family:"IBM Plex Mono";font-size:11.5px;padding:5px 10px;border:1px solid var(--line);border-radius:999px;background:var(--panel-hi);color:var(--ink-soft);}
+  .chip b{color:var(--teal-dk);}
+  .hero h1{font-size:clamp(2rem,5vw,3.2rem);max-width:18ch;}
+  .hero h1 .hl{color:var(--amber);}
+  .hero p.lede{margin-top:18px;max-width:62ch;font-size:1.06rem;color:var(--ink-soft);}
+  .actions{margin-top:26px;display:flex;gap:12px;flex-wrap:wrap;}
+
+  section{padding:46px 0;border-top:1px solid var(--line);}
+  .sec-head{display:flex;align-items:baseline;gap:14px;margin-bottom:6px;}
+  .sec-head .num{font-family:"IBM Plex Mono";font-size:13px;color:var(--amber);font-weight:600;}
+  .sec-head h2{font-size:clamp(1.4rem,3.2vw,1.95rem);}
+  .sec-sub{color:var(--ink-soft);max-width:64ch;margin:0 0 26px;}
+
+  .diagram{background:var(--panel-hi);border:1px solid var(--line);border-radius:14px;padding:22px;box-shadow:var(--shadow);overflow:auto;}
+  .diagram + .diagram{margin-top:18px;}
+  .diagram .mermaid{display:flex;justify-content:center;min-width:480px;}
+
+  .legend{display:flex;flex-wrap:wrap;gap:12px 18px;margin:14px 2px 0;}
+  .lg{display:inline-flex;align-items:center;gap:7px;font-size:12px;color:var(--ink-soft);font-family:"IBM Plex Mono";}
+  .lg i{width:22px;height:0;border-top-width:2px;display:inline-block;}
+  .lg.solid i{border-top:2px solid var(--ink);}
+  .lg.dash i{border-top:2px dashed var(--ink-soft);}
+
+  .card{border:1px solid var(--line);border-radius:12px;padding:22px;background:var(--panel-hi);}
+  .card.do{border-top:4px solid var(--amber);}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+  @media(max-width:740px){.grid2{grid-template-columns:1fr;}}
+  .card h3{font-size:1.1rem;margin-bottom:6px;}
+  .card ul{margin:12px 0 0;padding-left:18px;}
+  .card li{margin:8px 0;font-size:14.5px;color:var(--ink-soft);}
+  .card.do li::marker{color:var(--amber);}
+
+  footer{border-top:1px solid var(--line);padding:36px 0 56px;color:var(--ink-soft);font-size:13px;}
+  @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;}}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="wrap row">
+    <span class="brand"><span class="dot"></span>Edig<b>csms</b></span>
+    <span class="cta"><a class="btn" href="csms-ecosystem-prd.html">Buka PRD interaktif →</a></span>
+  </div>
+</header>
+
+<div class="hero wrap">
+  <div class="kick">
+    <span class="chip mono">Dokumentasi · <b>DRAFT untuk validasi konsultan</b></span>
+    <span class="chip mono">Acuan: <b>PTK 005</b> · CHSEMS SKK Migas</span>
+  </div>
+  <h1>Ekosistem &amp; alur CSMS — di mana <span class="hl">Edigcsms</span> berperan</h1>
+  <p class="lede">Halaman ringkas berisi bagan alir end-to-end, peta keterhubungan sistem, dan urutan interaksi.
+    Untuk dokumen lengkap yang bisa diklik per bagian, buka PRD interaktif.</p>
+  <div class="actions">
+    <a class="btn" href="csms-ecosystem-prd.html">Buka PRD interaktif →</a>
+    <a class="btn ghost" href="FLOW.md">Lihat sumber diagram (Markdown)</a>
+  </div>
+</div>
+
+<section>
+  <div class="wrap">
+    <div class="sec-head"><span class="num">01</span><h2>Bagan alir end-to-end</h2></div>
+    <p class="sec-sub">Dari registrasi vendor sampai status "lulus CSMS". Blok amber = zona Edigcsms; garis putus-putus = serah-terima manual ke sistem pemerintah.</p>
+    <div class="diagram">
+      <pre class="mermaid">
+flowchart TD
+  subgraph V["VENDOR / MITRA KERJA"]
+    A0["0 · Registrasi di CIVD<br/>data &amp; legalitas perusahaan"]
+  end
+  subgraph E["EDIGCSMS — persiapan &amp; readiness"]
+    A1["1 · Klasifikasi risiko pekerjaan<br/>rendah / sedang / tinggi"]
+    A2["2 · Isi kuesioner 8 elemen<br/>+ kumpulkan bukti pendukung"]
+    A3["3 · Self-scoring &amp; gap analysis<br/>target lulus ≥ 60% / ≥ 54,3%"]
+    PKG["Paket PK siap-submit"]
+  end
+  subgraph K["PORTAL &amp; TIM PENILAI KKKS"]
+    A4["4 · Submit ke portal resmi<br/>PHE VMS / PEP i-P2P"]
+    A5["5 · Verifikasi dokumen + lapangan<br/>lalu skoring"]
+  end
+  subgraph S["SKK MIGAS"]
+    A6["6 · Input Nilai Kualifikasi K3LL<br/>ke e-CHSEMS (oleh KKKS)"]
+    CIVD[("CIVD<br/>database vendor")]
+    A7["7 · Lulus → ikut tender<br/>berlaku lintas KKKS · PB/PA"]
+  end
+  A0 --> A1 --> A2 --> A3 --> PKG
+  PKG -. "upload manual oleh vendor" .-> A4
+  A4 --> A5 --> A6 --> A7
+  A0 -. tertaut .- CIVD
+  A6 -. terintegrasi .- CIVD
+  classDef edig fill:#FDEFDD,stroke:#C2630B,stroke-width:2px,color:#16201D;
+  classDef gov fill:#E7F0F7,stroke:#2B5F8A,color:#16201D;
+  classDef kkks fill:#E2F0EE,stroke:#0E6E66,color:#16201D;
+  classDef pass fill:#E4F2E9,stroke:#2E7D52,color:#16201D;
+  class A1,A2,A3,PKG edig;
+  class A0,A6,CIVD gov;
+  class A4,A5 kkks;
+  class A7 pass;
+      </pre>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="sec-head"><span class="num">02</span><h2>Keterhubungan sistem Edigcsms</h2></div>
+    <p class="sec-sub">Garis tegas = integrasi yang bisa dibangun. Garis putus-putus = serah-terima manual / tanpa API (sistem pemerintah).</p>
+    <div class="diagram">
+      <pre class="mermaid">
+flowchart LR
+  vendor["Vendor (pengguna)"]
+  subgraph EDIG["EDIGCSMS Platform"]
+    wiz["Wizard kuesioner<br/>8 elemen"]
+    repo["Repository dokumen<br/>reusable lintas tender"]
+    score["Mesin scoring<br/>&amp; gap analysis"]
+    exp["Export paket PK<br/>PDF / arsip"]
+  end
+  vendor --> wiz
+  wiz --> repo --> score --> exp
+  auth["Auth / SSO"] --> EDIG
+  store["Cloud storage<br/>terenkripsi"] --- repo
+  pay["Payment<br/>langganan SaaS"] --- EDIG
+  sign["e-Sign dokumen"] -. opsional .- exp
+  expert["Expert review<br/>layanan hybrid"] -. opsional .- score
+  exp -. "upload manual oleh vendor" .-> portal["Portal KKKS<br/>PHE VMS / PEP i-P2P"]
+  portal -. hasil dinilai .-> echs["e-CHSEMS<br/>SKK Migas"]
+  echs -. terintegrasi .- civd["CIVD<br/>SKK Migas"]
+  classDef edig fill:#FDEFDD,stroke:#C2630B,stroke-width:2px,color:#16201D;
+  classDef ext fill:#F3F5F1,stroke:#4A554F,color:#16201D;
+  classDef gov fill:#E7F0F7,stroke:#2B5F8A,stroke-dasharray:4 3,color:#16201D;
+  class wiz,repo,score,exp edig;
+  class auth,store,pay,sign,expert,vendor ext;
+  class portal,echs,civd gov;
+      </pre>
+    </div>
+    <div class="legend">
+      <span class="lg solid"><i></i>Integrasi yang bisa dibangun</span>
+      <span class="lg dash"><i></i>Serah-terima manual / tanpa API</span>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="sec-head"><span class="num">03</span><h2>Urutan interaksi</h2></div>
+    <p class="sec-sub">Alur antar-pihak dari pengisian sampai status lulus tercatat.</p>
+    <div class="diagram">
+      <pre class="mermaid">
+sequenceDiagram
+  actor V as Vendor
+  participant ED as Edigcsms
+  participant PK as Portal KKKS
+  participant TP as Tim Penilai KKKS
+  participant EC as e-CHSEMS
+  V->>ED: Isi kuesioner 8 elemen + unggah bukti
+  ED-->>V: Skor prediksi + daftar gap
+  V->>ED: Perbaiki gap sampai siap
+  ED-->>V: Paket PK siap-submit
+  V->>PK: Upload paket (manual)
+  PK->>TP: Teruskan untuk penilaian
+  TP->>TP: Verifikasi dokumen + lapangan + skoring
+  TP->>EC: Input Nilai Kualifikasi K3LL
+  EC-->>V: Status "lulus CSMS" (lintas KKKS)
+      </pre>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="sec-head"><span class="num">04</span><h2>Batas peran Edigcsms</h2></div>
+    <div class="grid2">
+      <div class="card do">
+        <h3>Yang dikerjakan</h3>
+        <ul>
+          <li>Wizard 8 elemen + template &amp; checklist bukti</li>
+          <li>Simulasi skor (≥60% / ≥54,3%) &amp; gap analysis</li>
+          <li>Repository dokumen reusable lintas tender</li>
+          <li>Paket "siap-submit" untuk di-upload ke portal KKKS</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Di luar cakupan</h3>
+        <ul>
+          <li>Tidak terhubung otomatis ke CIVD / e-CHSEMS / portal KKKS</li>
+          <li>Tidak menerbitkan sertifikat — penilai tetap tim KKKS</li>
+          <li>Tidak menggantikan verifikasi lapangan</li>
+          <li>Output = kesiapan, bukan jaminan lulus</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <strong>Edigcsms — Dokumentasi Ekosistem &amp; Alur CSMS · DRAFT v0.1.</strong>
+    Dokumen kerja untuk validasi bersama konsultan. Nilai ambang &amp; alur portal dirangkum dari sumber publik;
+    konfirmasi ke PTK 005 / kriteria e-CHSEMS edisi terbaru.
+  </div>
+</footer>
+
+<script type="module">
+  import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  mermaid.initialize({
+    startOnLoad:true,
+    securityLevel:"strict",
+    theme:"base",
+    themeVariables:{
+      fontFamily:"IBM Plex Sans, sans-serif",
+      primaryColor:"#F3F5F1", primaryTextColor:"#16201D", primaryBorderColor:"#C5CCC4",
+      lineColor:"#4A554F", tertiaryColor:"#FBFCFA"
+    },
+    flowchart:{ htmlLabels:true, curve:"basis" }
+  });
+</script>
+</body>
+</html>
