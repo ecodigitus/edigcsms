@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Edigcsms — Peta Ekosistem & Alur CSMS (PRD untuk Validasi)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  /* ============================================================
+     Edigcsms — CSMS Ecosystem PRD
+     Visual system: "skema kilang / control panel"
+     ground = concrete steel, brand = petrol teal, product = safety amber
+     ============================================================ */
+  :root {
+    --ground:   #E4E7E2;   /* concrete grey-green */
+    --panel:    #F3F5F1;   /* lighter panel */
+    --panel-hi: #FBFCFA;   /* card surface */
+    --ink:      #16201D;   /* petroleum ink */
+    --ink-soft: #4A554F;   /* muted text */
+    --line:     #C5CCC4;   /* hairline */
+    --line-2:   #D7DCD5;
+
+    --teal:     #0E6E66;   /* brand: petrol teal */
+    --teal-dk:  #0A4F49;
+    --amber:    #C2630B;   /* PRODUCT zone: safety amber */
+    --amber-gl: #F4A03A;   /* amber glow */
+
+    --stop:     #B23A2E;   /* fail / mandatory */
+    --go:       #2E7D52;   /* pass / e-CHSEMS */
+    --gov:      #2B5F8A;   /* government systems */
+
+    --shadow:   0 1px 0 rgba(22,32,29,.04), 0 8px 30px -16px rgba(22,32,29,.28);
+    --maxw: 1120px;
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background:
+      radial-gradient(1200px 600px at 80% -5%, rgba(14,110,102,.06), transparent 60%),
+      var(--ground);
+    color: var(--ink);
+    font-family: "IBM Plex Sans", system-ui, sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ---- type ---- */
+  h1, h2, h3 { font-family: "Space Grotesk", sans-serif; font-weight: 600; line-height: 1.08; margin: 0; letter-spacing: -.01em; }
+  .mono { font-family: "IBM Plex Mono", monospace; }
+  .eyebrow {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 12px; font-weight: 500; letter-spacing: .18em; text-transform: uppercase;
+    color: var(--teal-dk);
+  }
+  a { color: var(--teal-dk); }
+
+  .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 28px; }
+
+  /* ============ TOP BAR ============ */
+  .topbar {
+    position: sticky; top: 0; z-index: 50;
+    background: rgba(228,231,226,.82);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--line);
+  }
+  .topbar .row { display: flex; align-items: center; gap: 16px; height: 58px; }
+  .brand { display: flex; align-items: center; gap: 10px; font-family: "Space Grotesk"; font-weight: 700; letter-spacing: -.02em; }
+  .brand .dot { width: 11px; height: 11px; border-radius: 2px; background: var(--amber); box-shadow: 0 0 0 3px rgba(194,99,11,.18); }
+  .brand b { color: var(--amber); }
+  .topbar nav { margin-left: auto; display: flex; gap: 6px; flex-wrap: wrap; }
+  .topbar nav a {
+    font-family: "IBM Plex Mono", monospace; font-size: 12px; text-decoration: none;
+    color: var(--ink-soft); padding: 6px 10px; border-radius: 6px; letter-spacing: .02em;
+  }
+  .topbar nav a:hover { background: var(--panel-hi); color: var(--ink); }
+  @media (max-width: 820px) { .topbar nav { display: none; } }
+
+  /* ============ HERO ============ */
+  .hero { padding: 58px 0 30px; }
+  .hero .kicker { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 22px; }
+  .chip {
+    font-family: "IBM Plex Mono", monospace; font-size: 11.5px; letter-spacing: .04em;
+    padding: 5px 10px; border: 1px solid var(--line); border-radius: 999px; background: var(--panel-hi);
+    color: var(--ink-soft);
+  }
+  .chip b { color: var(--teal-dk); font-weight: 600; }
+  .hero h1 { font-size: clamp(2.1rem, 5.2vw, 3.6rem); max-width: 16ch; }
+  .hero h1 .hl { color: var(--amber); position: relative; white-space: nowrap; }
+  .hero .lede { margin-top: 20px; max-width: 60ch; font-size: 1.075rem; color: var(--ink-soft); }
+  .hero .lede strong { color: var(--ink); font-weight: 600; }
+
+  /* ============ PIPELINE SCHEMATIC (hero thesis) ============ */
+  .schematic {
+    margin-top: 40px; background: var(--panel-hi); border: 1px solid var(--line);
+    border-radius: 14px; padding: 26px 22px 18px; box-shadow: var(--shadow); position: relative; overflow: hidden;
+  }
+  .schematic .legend { display: flex; flex-wrap: wrap; gap: 14px 20px; margin-bottom: 22px; }
+  .lg { display: inline-flex; align-items: center; gap: 7px; font-size: 12px; color: var(--ink-soft); font-family: "IBM Plex Mono", monospace; }
+  .lg i { width: 12px; height: 12px; border-radius: 3px; display: inline-block; }
+  .lg.vendor i { background: var(--ink); }
+  .lg.gov i { background: var(--gov); }
+  .lg.kkks i { background: var(--teal); }
+  .lg.echs i { background: var(--go); }
+  .lg.prod i { background: var(--amber); }
+
+  .pipe { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; align-items: stretch; position: relative; }
+  @media (max-width: 760px) { .pipe { grid-template-columns: 1fr; } }
+
+  .node {
+    position: relative; background: var(--panel); border: 1.5px solid var(--line-2);
+    border-radius: 11px; padding: 16px 14px; margin: 8px; min-height: 132px;
+    display: flex; flex-direction: column; gap: 6px; transition: transform .18s ease, box-shadow .18s ease, border-color .18s;
+  }
+  .node .tag { font-family: "IBM Plex Mono"; font-size: 10.5px; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-soft); }
+  .node h3 { font-size: 1.02rem; }
+  .node p { margin: 0; font-size: 12.5px; color: var(--ink-soft); line-height: 1.45; }
+  .node .who { margin-top: auto; font-family: "IBM Plex Mono"; font-size: 10.5px; letter-spacing: .04em; padding-top: 8px; }
+  .node.gov  { border-top: 3px solid var(--gov); }
+  .node.gov .who { color: var(--gov); }
+  .node.kkks { border-top: 3px solid var(--teal); }
+  .node.kkks .who { color: var(--teal-dk); }
+  .node.echs { border-top: 3px solid var(--go); }
+  .node.echs .who { color: var(--go); }
+
+  /* product module — the one warm, glowing element */
+  .node.product {
+    border: 1.5px solid var(--amber); background: linear-gradient(180deg, #FFF6EC, #FDEFDD);
+    box-shadow: 0 0 0 4px rgba(244,160,58,.16), 0 14px 30px -18px rgba(194,99,11,.55);
+  }
+  .node.product .tag { color: var(--amber); }
+  .node.product .who { color: var(--amber); }
+  .node.product .badge {
+    position: absolute; top: -11px; right: 12px; background: var(--amber); color: #fff;
+    font-family: "IBM Plex Mono"; font-size: 10px; letter-spacing: .1em; padding: 3px 8px; border-radius: 999px;
+    box-shadow: 0 4px 10px -3px rgba(194,99,11,.6);
+  }
+
+  .flowline { grid-column: 1 / -1; height: 30px; position: relative; margin: 2px 8px 6px; }
+  .flowline svg { width: 100%; height: 100%; display: block; }
+  .schematic .footnote { margin-top: 6px; font-size: 11.5px; color: var(--ink-soft); font-family: "IBM Plex Mono"; }
+
+  /* ============ SECTION SCAFFOLD ============ */
+  section { padding: 56px 0; border-top: 1px solid var(--line); }
+  .sec-head { display: flex; align-items: baseline; gap: 16px; margin-bottom: 8px; }
+  .sec-head .num { font-family: "IBM Plex Mono"; font-size: 13px; color: var(--amber); font-weight: 600; }
+  .sec-head h2 { font-size: clamp(1.5rem, 3.4vw, 2.1rem); }
+  .sec-sub { color: var(--ink-soft); max-width: 64ch; margin: 0 0 30px; }
+
+  /* ============ INTERACTIVE STEP FLOW ============ */
+  .steps { display: grid; grid-template-columns: 1fr; gap: 10px; }
+  .step {
+    border: 1px solid var(--line); border-radius: 11px; background: var(--panel-hi); overflow: hidden;
+    transition: border-color .18s, box-shadow .18s;
+  }
+  .step.is-product { border-color: rgba(194,99,11,.45); }
+  .step-btn {
+    width: 100%; text-align: left; background: none; border: 0; cursor: pointer; color: inherit;
+    display: grid; grid-template-columns: 54px 1fr auto; align-items: center; gap: 16px; padding: 16px 18px; font: inherit;
+  }
+  .step-btn:hover { background: var(--panel); }
+  .step-btn:focus-visible { outline: 2px solid var(--teal); outline-offset: -2px; }
+  .step .idx {
+    font-family: "IBM Plex Mono"; font-weight: 600; font-size: 15px; color: #fff;
+    width: 40px; height: 40px; border-radius: 9px; display: grid; place-items: center; background: var(--ink);
+  }
+  .step.lane-gov  .idx { background: var(--gov); }
+  .step.lane-kkks .idx { background: var(--teal); }
+  .step.lane-echs .idx { background: var(--go); }
+  .step.lane-prod .idx { background: var(--amber); }
+  .step .st-title { font-family: "Space Grotesk"; font-weight: 600; font-size: 1.06rem; }
+  .step .st-meta { font-family: "IBM Plex Mono"; font-size: 11px; letter-spacing: .05em; color: var(--ink-soft); margin-top: 3px; text-transform: uppercase; }
+  .step .lane-pill {
+    font-family: "IBM Plex Mono"; font-size: 10.5px; letter-spacing: .06em; padding: 4px 9px; border-radius: 999px;
+    border: 1px solid var(--line-2); white-space: nowrap;
+  }
+  .step.lane-prod .lane-pill { background: var(--amber); color: #fff; border-color: var(--amber); }
+  .chev { transition: transform .22s ease; color: var(--ink-soft); }
+  .step[aria-expanded="true"] .chev { transform: rotate(90deg); }
+  .step-body { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .26s ease; }
+  .step[aria-expanded="true"] .step-body { grid-template-rows: 1fr; }
+  .step-body > div { overflow: hidden; }
+  .step-inner { padding: 2px 18px 20px 88px; }
+  @media (max-width: 620px){ .step-inner { padding: 2px 18px 20px 18px; } .step-btn { grid-template-columns: 40px 1fr auto; gap:12px; } }
+  .step-inner p { margin: 0 0 12px; color: var(--ink-soft); }
+  .step-inner .io { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+  .io .pair { font-family: "IBM Plex Mono"; font-size: 11.5px; background: var(--panel); border: 1px solid var(--line-2); border-radius: 7px; padding: 6px 10px; }
+  .io .pair b { color: var(--teal-dk); }
+  .edig-note {
+    margin-top: 12px; border-left: 3px solid var(--amber); background: #FFF6EC; padding: 10px 14px; border-radius: 0 8px 8px 0;
+    font-size: 13.5px;
+  }
+  .edig-note b { color: var(--amber); }
+
+  /* ============ 8 ELEMENTS GRID ============ */
+  .grid8 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+  @media (max-width: 900px){ .grid8 { grid-template-columns: repeat(2,1fr);} }
+  @media (max-width: 520px){ .grid8 { grid-template-columns: 1fr;} }
+  .el {
+    border: 1px solid var(--line); border-radius: 10px; background: var(--panel-hi); padding: 14px; cursor: pointer;
+    transition: border-color .15s, transform .15s, box-shadow .15s; position: relative;
+  }
+  .el:hover { border-color: var(--teal); transform: translateY(-2px); box-shadow: var(--shadow); }
+  .el .en { font-family: "IBM Plex Mono"; font-size: 12px; color: var(--amber); font-weight: 600; }
+  .el h3 { font-size: .98rem; margin: 6px 0 0; line-height: 1.15; }
+  .el .mand { position: absolute; top: 12px; right: 12px; font-family:"IBM Plex Mono"; font-size: 9px; letter-spacing:.1em; color: var(--stop); border:1px solid rgba(178,58,46,.4); border-radius: 4px; padding: 2px 5px; }
+  .el .docs { display: none; margin-top: 10px; font-size: 12.5px; color: var(--ink-soft); }
+  .el.open { border-color: var(--teal); box-shadow: var(--shadow); }
+  .el.open .docs { display: block; }
+  .el .docs ul { margin: 6px 0 0; padding-left: 16px; }
+  .el .docs li { margin: 2px 0; }
+
+  .scorebar { display:flex; flex-wrap:wrap; gap: 12px; margin-top: 22px; }
+  .scorebar .sc { flex: 1 1 200px; border:1px solid var(--line); border-radius: 10px; padding: 14px 16px; background: var(--panel-hi); }
+  .scorebar .sc .lab { font-family:"IBM Plex Mono"; font-size: 11px; letter-spacing:.08em; text-transform: uppercase; color: var(--ink-soft); }
+  .scorebar .sc .val { font-family:"Space Grotesk"; font-weight:700; font-size: 2rem; margin-top: 4px; }
+  .sc.hi .val { color: var(--stop); }
+  .sc.med .val { color: var(--amber); }
+  .sc.low .val { color: var(--go); font-size: 1.2rem; }
+
+  /* ============ EDIGCSMS ROLE ============ */
+  .role-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width: 740px){ .role-grid { grid-template-columns: 1fr; } }
+  .card {
+    border: 1px solid var(--line); border-radius: 12px; padding: 22px; background: var(--panel-hi);
+  }
+  .card.do  { border-top: 4px solid var(--amber); }
+  .card.dont{ border-top: 4px solid var(--stop); }
+  .card h3 { font-size: 1.15rem; margin-bottom: 4px; }
+  .card .sub { font-family:"IBM Plex Mono"; font-size: 11px; letter-spacing:.06em; text-transform: uppercase; color: var(--ink-soft); }
+  .card ul { margin: 14px 0 0; padding: 0; list-style: none; }
+  .card li { position: relative; padding-left: 26px; margin: 10px 0; font-size: 14.5px; }
+  .card.do  li::before { content: "▹"; position: absolute; left: 4px; color: var(--amber); }
+  .card.dont li::before{ content: "✕"; position: absolute; left: 4px; color: var(--stop); font-size: 12px; top:2px;}
+
+  /* ============ STANDARDS ============ */
+  .std { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  @media (max-width: 740px){ .std { grid-template-columns: 1fr; } }
+  .std .ref { border: 1px solid var(--line); border-radius: 9px; padding: 14px 16px; background: var(--panel-hi); display:flex; gap: 14px; }
+  .std .ref .code { font-family:"IBM Plex Mono"; font-weight:600; font-size: 12px; color:#fff; background: var(--teal); padding: 4px 8px; border-radius: 6px; height: fit-content; white-space: nowrap; }
+  .std .ref .desc { font-size: 13.5px; color: var(--ink-soft); }
+  .std .ref .desc b { color: var(--ink); font-weight: 600; }
+
+  .callout {
+    margin-top: 26px; border: 1px dashed var(--amber); background: #FFF8F0; border-radius: 12px; padding: 18px 20px;
+    font-size: 14px;
+  }
+  .callout b { color: var(--amber); }
+
+  /* ============ FOOTER ============ */
+  footer { border-top: 1px solid var(--line); padding: 40px 0 60px; color: var(--ink-soft); font-size: 13px; }
+  footer .src { margin-top: 14px; columns: 2; column-gap: 30px; font-size: 12.5px; }
+  @media (max-width: 640px){ footer .src { columns: 1; } }
+  footer a { word-break: break-word; }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { animation: none !important; transition: none !important; scroll-behavior: auto; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ TOP BAR ============ -->
+<header class="topbar">
+  <div class="wrap row">
+    <span class="brand"><span class="dot"></span>Edig<b>csms</b></span>
+    <nav>
+      <a href="#peta">Peta Ekosistem</a>
+      <a href="#alur">Alur End-to-End</a>
+      <a href="#elemen">8 Elemen</a>
+      <a href="#peran">Peran Edigcsms</a>
+      <a href="#standar">Standar</a>
+    </nav>
+  </div>
+</header>
+
+<!-- ============ HERO ============ -->
+<div class="hero wrap">
+  <div class="kicker">
+    <span class="chip mono">PRD · v0.1 · <b>DRAFT untuk validasi konsultan</b></span>
+    <span class="chip mono">Acuan: <b>PTK 005</b> · CHSEMS SKK Migas</span>
+    <span class="chip mono">Hulu Migas Indonesia</span>
+  </div>
+  <h1>Di mana <span class="hl">Edigcsms</span> berperan dalam rantai CIVD &rarr; KKKS &rarr; e&#8209;CHSEMS?</h1>
+  <p class="lede">
+    Vendor migas tidak meng-<em>upload</em> langsung ke e-CHSEMS. Yang terjadi: vendor terdaftar di
+    <strong>CIVD</strong>, menyiapkan paket kualifikasi K3LL, men-<em>submit</em> ke <strong>portal KKKS</strong>,
+    lalu tim penilai KKKS yang memasukkan <strong>nilai</strong> ke <strong>e-CHSEMS</strong>.
+    Edigcsms hidup di satu titik yang paling mahal &amp; repetitif: <strong>menyiapkan vendor sampai siap submit.</strong>
+  </p>
+
+  <!-- ===== PIPELINE SCHEMATIC (thesis) ===== -->
+  <div class="schematic" aria-label="Skema aliran sistem CSMS">
+    <div class="legend">
+      <span class="lg vendor"><i></i>Aksi vendor</span>
+      <span class="lg gov"><i></i>Sistem pemerintah (SKK Migas)</span>
+      <span class="lg kkks"><i></i>Portal &amp; penilai KKKS</span>
+      <span class="lg echs"><i></i>Database hasil (e-CHSEMS)</span>
+      <span class="lg prod"><i></i>Edigcsms (produk)</span>
+    </div>
+
+    <div class="pipe">
+      <div class="node gov">
+        <span class="tag">Langkah 0 · Prasyarat</span>
+        <h3>CIVD</h3>
+        <p>Registrasi &amp; data master vendor terpusat untuk seluruh KKKS.</p>
+        <span class="who">▸ diisi VENDOR</span>
+      </div>
+      <div class="node product">
+        <span class="badge mono">EDIGCSMS</span>
+        <span class="tag">Langkah 1–3 · Persiapan</span>
+        <h3>Readiness K3LL</h3>
+        <p>Klasifikasi risiko, isi kuesioner 8 elemen, kumpulkan bukti, self-scoring &amp; gap analysis.</p>
+        <span class="who">▸ produk kita</span>
+      </div>
+      <div class="node kkks">
+        <span class="tag">Langkah 4–5 · Submit &amp; nilai</span>
+        <h3>Portal KKKS</h3>
+        <p>PHE VMS / PEP i-P2P. Tim penilai verifikasi dokumen + lapangan, lalu skoring.</p>
+        <span class="who">▸ submit VENDOR · nilai KKKS</span>
+      </div>
+      <div class="node echs">
+        <span class="tag">Langkah 6 · Hasil</span>
+        <h3>e-CHSEMS</h3>
+        <p>Nilai Kualifikasi K3LL tercatat &amp; terintegrasi CIVD — berlaku lintas KKKS.</p>
+        <span class="who">▸ di-input KKKS</span>
+      </div>
+
+      <!-- animated flow pulse through the pipeline -->
+      <div class="flowline">
+        <svg viewBox="0 0 1000 30" preserveAspectRatio="none" aria-hidden="true">
+          <line x1="0" y1="15" x2="1000" y2="15" stroke="#C5CCC4" stroke-width="2" stroke-dasharray="2 6" />
+          <circle id="pulse" r="5" cy="15" fill="#C2630B" />
+        </svg>
+      </div>
+    </div>
+    <p class="footnote">↑ Aliran data &amp; tanggung jawab dari kiri ke kanan. Edigcsms berhenti tepat sebelum "Portal KKKS" — tidak ada koneksi langsung ke sistem pemerintah.</p>
+  </div>
+</div>
+
+<!-- ============ 1 · PETA EKOSISTEM ============ -->
+<section id="peta">
+  <div class="wrap">
+    <div class="sec-head"><span class="num">01</span><h2>Peta ekosistem — siapa memegang apa</h2></div>
+    <p class="sec-sub">Empat sistem yang sering tertukar. Kuncinya: <strong>CIVD = data vendor</strong>, <strong>Portal KKKS = tempat submit</strong>, <strong>e-CHSEMS = database hasil</strong>. Klik tiap tahap di bawah untuk detailnya.</p>
+
+    <div class="steps" id="ecoSteps"></div>
+  </div>
+</section>
+
+<!-- ============ 2 · ALUR END-TO-END ============ -->
+<section id="alur">
+  <div class="wrap">
+    <div class="sec-head"><span class="num">02</span><h2>Alur end-to-end, langkah per langkah</h2></div>
+    <p class="sec-sub">Urutan kronologis dari pendaftaran sampai "lulus CSMS". Setiap langkah menunjukkan <span class="mono">INPUT</span> &amp; <span class="mono">OUTPUT</span>-nya, dan ditandai bila <span style="color:var(--amber);font-weight:600">Edigcsms</span> berperan. Klik untuk membuka.</p>
+    <div class="steps" id="flowSteps"></div>
+  </div>
+</section>
+
+<!-- ============ 3 · 8 ELEMEN ============ -->
+<section id="elemen">
+  <div class="wrap">
+    <div class="sec-head"><span class="num">03</span><h2>8 elemen penilaian K3LL + ambang lulus</h2></div>
+    <p class="sec-sub">Isi paket PK = menjawab kuesioner 8 elemen (skor A=0 · B=3 · C=6 · D=10) + bukti pendukung tiap jawaban. Klik elemen untuk melihat contoh dokumen yang Edigcsms bantu siapkan.</p>
+    <div class="grid8" id="elGrid"></div>
+
+    <div class="scorebar">
+      <div class="sc hi"><div class="lab">Risiko Tinggi · ambang lulus</div><div class="val">≥ 60%</div></div>
+      <div class="sc med"><div class="lab">Risiko Sedang · ambang lulus</div><div class="val">≥ 54,3%</div></div>
+      <div class="sc low"><div class="lab">Risiko Rendah</div><div class="val">Tanpa Penilaian Kualifikasi</div></div>
+    </div>
+    <div class="callout"><b>Catatan kepatuhan:</b> sub-elemen <em>mandatory</em> wajib lolos ambang minimal — gagal di salah satunya bisa menggugurkan meski total skor cukup. Angka &amp; daftar mandatory harus dikonfirmasi ke versi PTK 005/kriteria e-CHSEMS terbaru saat validasi.</div>
+  </div>
+</section>
+
+<!-- ============ 4 · PERAN EDIGCSMS ============ -->
+<section id="peran">
+  <div class="wrap">
+    <div class="sec-head"><span class="num">04</span><h2>Batas peran Edigcsms — yang dikerjakan vs tidak</h2></div>
+    <p class="sec-sub">Positioning jujur supaya tidak <em>overclaim</em>: Edigcsms adalah <strong>layer persiapan &amp; readiness</strong>, bukan pengganti portal resmi atau lembaga penilai.</p>
+    <div class="role-grid">
+      <div class="card do">
+        <span class="sub">Cakupan produk</span>
+        <h3>Yang Edigcsms kerjakan</h3>
+        <ul>
+          <li>Memandu klasifikasi risiko pekerjaan (rendah / sedang / tinggi).</li>
+          <li>Wizard pengisian kuesioner 8 elemen sesuai PTK 005 / kriteria e-CHSEMS.</li>
+          <li>Checklist + template dokumen bukti (kebijakan, HIRADC, JSA, statistik, dll).</li>
+          <li>Simulasi skor: prediksi lolos ≥60% / ≥54,3% sebelum submit.</li>
+          <li>Gap analysis: menunjuk dokumen/elemen yang masih kurang.</li>
+          <li>Repository reusable — dipakai ulang lintas tender &amp; KKKS.</li>
+          <li>Paket "siap-submit" yang tinggal di-upload vendor ke portal KKKS.</li>
+        </ul>
+      </div>
+      <div class="card dont">
+        <span class="sub">Di luar cakupan</span>
+        <h3>Yang Edigcsms TIDAK lakukan</h3>
+        <ul>
+          <li>Tidak terhubung / submit otomatis ke e-CHSEMS, CIVD, atau portal KKKS (tidak ada API publik).</li>
+          <li>Tidak menerbitkan sertifikat — penilai resmi tetap tim KKKS.</li>
+          <li>Tidak menggantikan verifikasi lapangan oleh assessor.</li>
+          <li>Tidak menjamin "pasti lulus" — output adalah kesiapan, bukan kelulusan.</li>
+          <li>Tidak membuat sistem HSE yang nyata berjalan (dokumen harus mencerminkan praktik riil).</li>
+        </ul>
+      </div>
+    </div>
+    <div class="callout"><b>Model bisnis:</b> langganan SaaS untuk fungsi di atas + opsi <em>expert review</em> berbayar (hybrid). Karena gagal CSMS = gagal ikut tender, banyak vendor tetap mau jaminan manusia — peluang revenue tambahan.</div>
+  </div>
+</section>
+
+<!-- ============ 5 · STANDAR ============ -->
+<section id="standar">
+  <div class="wrap">
+    <div class="sec-head"><span class="num">05</span><h2>Standar &amp; regulasi yang berlaku</h2></div>
+    <p class="sec-sub">Acuan utama yang harus dipegang konten Edigcsms. <em>Verifikasi nomor &amp; revisi terbaru saat sesi dengan konsultan</em> — regulasi ini diperbarui berkala.</p>
+    <div class="std">
+      <div class="ref"><span class="code">PTK 005</span><span class="desc"><b>Pedoman Pengelolaan K3LL (CHSEMS)</b> SKK Migas — dasar kuesioner, 8 elemen, skoring &amp; ambang lulus.</span></div>
+      <div class="ref"><span class="code">KEP-074</span><span class="desc">Keputusan SKK Migas terkait <b>penerapan CSMS</b> bagi mitra kerja KKKS.</span></div>
+      <div class="ref"><span class="code">PTK 007</span><span class="desc">Pedoman <b>pengadaan barang/jasa</b> KKKS — konteks CIVD &amp; prakualifikasi tender.</span></div>
+      <div class="ref"><span class="code">e-CHSEMS</span><span class="desc">Sistem digital <b>terpusat</b> SKK Migas — satu kali nilai (PK/PB/PA), berlaku lintas KKKS, terintegrasi CIVD.</span></div>
+      <div class="ref"><span class="code">ISO 45001</span><span class="desc">Sertifikasi SMK3 internasional — <b>bukti pendukung</b> (elemen 8), bukan pengganti CSMS.</span></div>
+      <div class="ref"><span class="code">PP / SMK3</span><span class="desc">Sistem Manajemen K3 nasional — bukti kepatuhan legal pada paket kualifikasi.</span></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <strong>Edigcsms — Peta Ekosistem &amp; Alur CSMS · PRD v0.1 (DRAFT).</strong>
+    Dokumen kerja untuk divalidasi bersama konsultan CSMS/e-CHSEMS. Nilai ambang, daftar elemen <em>mandatory</em>,
+    dan alur portal (PHE VMS / PEP i-P2P) dirangkum dari sumber publik &amp; perlu dikonfirmasi ke PTK 005 / kriteria e-CHSEMS edisi terbaru.
+    <div class="src">
+      <div>• <a href="https://katigaku.top/2020/11/04/penilaian-csms/">Katigaku — 8 Elemen Penilaian CSMS</a></div>
+      <div>• <a href="https://id.scribd.com/document/634805169/Proses-Registrasi-CSMS-Subholding">Proses Registrasi CSMS Subholding (PHE VMS / PEP i-P2P)</a></div>
+      <div>• <a href="https://civdmigas.skkmigas.go.id/">CIVD — Centralized Integrated Vendor Database SKK Migas</a></div>
+      <div>• <a href="https://phe.pertamina.com/uploads/2023/06/60e19136-9a6e-4deb-bb78-41a7d3de4af4.pdf">Buku Saku Mitra Kerja PHE (e-CHSEMS)</a></div>
+      <div>• <a href="https://serikatnews.com/skk-migas-kembangkan-aplikasi-e-chsems/">SerikatNews — SKK Migas kembangkan e-CHSEMS</a></div>
+      <div>• <a href="https://aksenijasa.com/panduan-lengkap-csms-pertamina/">Akseni Jasa — Panduan Lengkap CSMS Pertamina</a></div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  /* ---------- DATA ---------- */
+  const ecosystem = [
+    { lane:"gov",  idx:"01", pill:"Pemerintah", title:"CIVD — Centralized Integrated Vendor Database",
+      meta:"diisi vendor · skkmigas.go.id",
+      body:"Database vendor terpusat untuk seluruh KKKS. Vendor registrasi data perusahaan & legalitas di sini. Jadi prasyarat dan 'pengikat' identitas vendor yang nantinya ditautkan ke hasil e-CHSEMS.",
+      io:[["Input","data & legalitas perusahaan"],["Pemilik","SKK Migas"]] },
+    { lane:"prod", idx:"02", pill:"EDIGCSMS", title:"Edigcsms — Persiapan & Readiness K3LL",
+      meta:"produk kita · sebelum submit",
+      body:"Tempat vendor menyusun paket kualifikasi: klasifikasi risiko, isi kuesioner 8 elemen, kumpulkan bukti, simulasi skor, dan gap analysis. Output: paket rapi yang siap di-upload ke portal KKKS.",
+      io:[["Input","jawaban & dokumen vendor"],["Output","paket PK siap-submit"]] },
+    { lane:"kkks", idx:"03", pill:"KKKS", title:"Portal KKKS — PHE VMS / PEP i-P2P",
+      meta:"submit oleh vendor · dinilai KKKS",
+      body:"Kanal resmi tempat vendor men-submit paket PK. PHE lewat app.phe.pertamina.com/VMS (status 'Submitted to PHE'); PEP lewat i-p2p.pertamina.com. Tim Penilai KKKS lalu verifikasi dokumen + lapangan dan memberi skor.",
+      io:[["Submit","vendor"],["Verifikasi & nilai","Tim Penilai KKKS"]] },
+    { lane:"echs", idx:"04", pill:"SKK Migas", title:"e-CHSEMS — Database Hasil Terpusat",
+      meta:"di-input KKKS · echsems.id",
+      body:"Bukan tempat upload vendor. Nilai Kualifikasi K3LL hasil penilaian KKKS dimasukkan ke sini, terintegrasi dengan CIVD. Sekali dinilai (PK/PB/PA), hasil berlaku & bisa dipakai banyak KKKS.",
+      io:[["Input","Nilai Kualifikasi (oleh KKKS)"],["Berlaku","lintas KKKS"]] },
+  ];
+
+  const flow = [
+    { lane:"gov",  i:"0", product:false, title:"Registrasi vendor di CIVD", meta:"Prasyarat",
+      desc:"Vendor mendaftarkan perusahaan & legalitas di CIVD. Tanpa ini, identitas vendor tidak dikenali sistem hulu migas.",
+      io:[["IN","data perusahaan"],["OUT","vendor terdaftar CIVD"]] },
+    { lane:"prod", i:"1", product:true, title:"Klasifikasi risiko pekerjaan", meta:"Menentukan jalur",
+      desc:"Tentukan kategori pekerjaan: rendah, sedang, atau tinggi. Risiko rendah tidak perlu Penilaian Kualifikasi; sedang & tinggi wajib PK.",
+      io:[["IN","scope pekerjaan"],["OUT","kategori risiko + kebutuhan PK"]],
+      edig:"Edigcsms memandu klasifikasi ini supaya vendor tahu sejak awal apakah perlu PK & ambang skor mana yang dikejar." },
+    { lane:"prod", i:"2", product:true, title:"Susun paket PK: kuesioner 8 elemen + bukti", meta:"Inti persiapan",
+      desc:"Jawab kuesioner 8 elemen (A/B/C/D) dan lampirkan bukti tiap jawaban: kebijakan HSSE, struktur organisasi HSE, kompetensi personel, HIRADC/JSA, statistik TRIR/LTIFR, program inspeksi, prosedur darurat, audit.",
+      io:[["IN","jawaban + dokumen"],["OUT","paket PK lengkap"]],
+      edig:"Zona inti Edigcsms — wizard + template + repository. Inilah pekerjaan yang selama ini dibebankan ke konsultan berbayar." },
+    { lane:"prod", i:"3", product:true, title:"Self-scoring & gap analysis", meta:"Validasi sebelum submit",
+      desc:"Hitung prediksi skor terhadap ambang (≥60% tinggi / ≥54,3% sedang), cek sub-elemen mandatory, dan tampilkan daftar kekurangan untuk diperbaiki sebelum dikirim.",
+      io:[["IN","paket PK"],["OUT","skor prediksi + daftar gap"]],
+      edig:"Pembeda utama produk: vendor tahu posisinya SEBELUM submit, mengurangi risiko gagal & revisi bolak-balik." },
+    { lane:"kkks", i:"4", product:false, title:"Submit ke portal KKKS", meta:"PHE VMS / PEP i-P2P",
+      desc:"Vendor meng-upload paket ke kanal resmi KKKS. PHE: status 'Submitted to PHE'. PEP: pendaftaran di i-p2p.pertamina.com (di luar proses tender).",
+      io:[["IN","paket siap-submit (dari Edigcsms)"],["OUT","pengajuan resmi terkirim"]] },
+    { lane:"kkks", i:"5", product:false, title:"Verifikasi dokumen + lapangan & skoring", meta:"Tim Penilai KKKS",
+      desc:"Assessor KKKS memeriksa dokumen lalu melakukan verifikasi lapangan, dan menghitung skor akhir kelulusan K3LL.",
+      io:[["IN","pengajuan vendor"],["OUT","Nilai Kualifikasi K3LL"]] },
+    { lane:"echs", i:"6", product:false, title:"Input nilai ke e-CHSEMS", meta:"Terintegrasi CIVD",
+      desc:"KKKS memasukkan Nilai Kualifikasi ke database e-CHSEMS SKK Migas. Hasil terhubung CIVD dan berlaku lintas KKKS.",
+      io:[["IN","Nilai Kualifikasi (oleh KKKS)"],["OUT","status 'lulus CSMS' terpusat"]] },
+    { lane:"go",   i:"7", product:false, title:"Lulus → boleh ikut tender (PB/PA berlanjut)", meta:"Hasil",
+      desc:"Vendor yang lulus berhak ikut tender pekerjaan risiko sedang/tinggi. Selanjutnya ada Penilaian Berjalan (PB) & Penilaian Akhir (PA) yang berkelanjutan.",
+      io:[["Status","aktif lintas KKKS"],["Lanjutan","PB & PA"]] },
+  ];
+  // step 7 uses lane 'go' -> map to echs color
+  const laneClass = { gov:"lane-gov", kkks:"lane-kkks", echs:"lane-echs", prod:"lane-prod", go:"lane-echs" };
+
+  const elements = [
+    { n:"01", t:"Kepemimpinan & Komitmen", mand:true, docs:["Bukti keterlibatan manajemen","Safety meeting / management walk-through","Komitmen tertulis pimpinan"] },
+    { n:"02", t:"Kebijakan & Sasaran Strategis K3LL", mand:true, docs:["Dokumen kebijakan HSSE (ttd direksi)","Sasaran & target K3LL terukur"] },
+    { n:"03", t:"Organisasi, Tanggung Jawab, Sumber Daya, Standar & Dokumentasi", mand:false, docs:["Struktur organisasi HSE","Sertifikat Ahli K3 / kompetensi personel","Job description & dokumentasi"] },
+    { n:"04", t:"Manajemen Risiko", mand:true, docs:["HIRADC","Job Safety Analysis (JSA)","Daftar APD & MSDS"] },
+    { n:"05", t:"Perencanaan & Prosedur", mand:false, docs:["SOP operasi","Work permit system","Prosedur tanggap darurat"] },
+    { n:"06", t:"Implementasi & Pemantauan Kinerja K3LL", mand:true, docs:["Statistik TRIR / LTIFR","Laporan insiden","Program inspeksi rutin"] },
+    { n:"07", t:"Audit & Tinjauan Manajemen K3LL", mand:false, docs:["Laporan audit internal","Management review","Tindak lanjut temuan"] },
+    { n:"08", t:"Manajemen K3L & Pencapaian Lainnya", mand:false, docs:["Sertifikat ISO 45001 / 14001","SMK3","Penghargaan K3"] },
+  ];
+
+  /* ---------- RENDER: ecosystem & flow share the accordion component ---------- */
+  function renderSteps(container, items, opts){
+    container.innerHTML = items.map((s, k) => {
+      const lc = laneClass[s.lane] || "";
+      const isProd = s.product || s.lane === "prod";
+      const idx = opts.idxKey ? s[opts.idxKey] : s.idx;
+      const pill = s.pill || (isProd ? "EDIGCSMS" : s.lane.toUpperCase());
+      const io = (s.io||[]).map(p => `<span class="pair"><b>${p[0]}</b> · ${p[1]}</span>`).join("");
+      const edig = s.edig ? `<div class="edig-note"><b>↳ Peran Edigcsms:</b> ${s.edig}</div>` : "";
+      return `
+      <div class="step ${lc} ${isProd?'is-product':''}" aria-expanded="false">
+        <button class="step-btn" type="button">
+          <span class="idx">${idx}</span>
+          <span>
+            <span class="st-title">${s.title}</span>
+            <span class="st-meta">${s.meta||""}</span>
+          </span>
+          <span style="display:flex;align-items:center;gap:12px">
+            <span class="lane-pill">${pill}</span>
+            <svg class="chev" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+        </button>
+        <div class="step-body"><div><div class="step-inner">
+          <p>${s.body || s.desc}</p>
+          <div class="io">${io}</div>
+          ${edig}
+        </div></div></div>
+      </div>`;
+    }).join("");
+
+    container.querySelectorAll(".step-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const step = btn.closest(".step");
+        step.setAttribute("aria-expanded", step.getAttribute("aria-expanded") === "true" ? "false" : "true");
+      });
+    });
+  }
+
+  renderSteps(document.getElementById("ecoSteps"), ecosystem, { idxKey:"idx" });
+  renderSteps(document.getElementById("flowSteps"), flow, { idxKey:"i" });
+
+  /* ---------- RENDER: 8 elements ---------- */
+  document.getElementById("elGrid").innerHTML = elements.map(e => `
+    <div class="el" tabindex="0" role="button" aria-expanded="false">
+      ${e.mand ? '<span class="mand">MANDATORY</span>' : ''}
+      <span class="en">EL ${e.n}</span>
+      <h3>${e.t}</h3>
+      <div class="docs"><span class="mono" style="font-size:11px;color:var(--ink-soft)">Contoh bukti:</span>
+        <ul>${e.docs.map(d=>`<li>${d}</li>`).join("")}</ul>
+      </div>
+    </div>`).join("");
+
+  document.querySelectorAll(".el").forEach(el => {
+    const toggle = () => { el.classList.toggle("open"); el.setAttribute("aria-expanded", el.classList.contains("open")); };
+    el.addEventListener("click", toggle);
+    el.addEventListener("keydown", e => { if(e.key==="Enter"||e.key===" "){ e.preventDefault(); toggle(); } });
+  });
+
+  /* ---------- MOTION: single orchestrated pulse flowing through the pipe ---------- */
+  (function(){
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const pulse = document.getElementById("pulse");
+    if (reduce || !pulse) return;
+    let t = 0;
+    function tick(){
+      t = (t + 0.0045) % 1;
+      // ease so it lingers, like fluid surging through a pipe
+      const x = t * 1000;
+      pulse.setAttribute("cx", x);
+      pulse.setAttribute("opacity", (0.35 + 0.65*Math.sin(t*Math.PI)).toFixed(2));
+      requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  })();
+</script>
+</body>
+</html>
